@@ -9,6 +9,10 @@
      http_clients: 200 
        
    tasks:
+   - name: Update repositories cache and install "make" package
+     apt:
+       name: make
+       update_cache: yes
    - name: Update repositories cache and install "nodejs" package
      apt:
        name: nodejs
@@ -21,3 +25,20 @@
      become: True
      command: npm install @angular/cli -g
 
+   - name: Check that the /root/mailserver/  exists
+     stat:
+       path: /root/mailserver/
+     register: stat_result
+
+   - name: Delete the mailserver folder before clone 
+     file:
+       path: /root/mailserver/
+       state: absent
+     when: stat_result.stat.exists == True
+
+   - name: git checkout "Haraka"  
+     become: True
+     command: git clone https://github.com/heaerie/Haraka.git  /root/mailserver/
+   - name:  install haraka 
+     become: True
+     command: npm install -g /root/mailserver/
