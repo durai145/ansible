@@ -1,0 +1,23 @@
+---
+ - name: install pre-install for mail server
+   hosts: web
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+   - name: Update repositories cache and install "nodejs" package
+     apt:
+       name: nodejs
+       update_cache: yes
+   - name: Update repositories cache and install "npm" package
+     apt:
+       name: npm
+       update_cache: yes
+   - name: install angular/cli
+     become: True
+     command: npm install @angular/cli -g
+
