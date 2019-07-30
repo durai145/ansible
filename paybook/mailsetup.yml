@@ -1,0 +1,54 @@
+---
+ - name: install pre-install for mail server
+   hosts: web
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+   - name: Update repositories cache and install "make" package
+     apt:
+       name: ksh
+       update_cache: yes
+
+   - name: Check that the /root/mailserver/  exists
+     stat:
+       path: /root/mailconfig/
+     register: stat_result
+
+   - name: create the mailserver folder before clone 
+     file:
+       path: /root/mailconfig/
+       state: directory
+     when: stat_result.stat.exists == False
+
+
+   - name: haraka outbound configure   
+     become: True
+     command: haraka -i /root/mailconfig/haraka-outbound
+
+   - name: haraka outbound configure   
+     become: True
+     command: ksh /root/mailconfig/haraka-outbound/config/dkim/dkim_key_gen.sh  heaerieglobalsolutions.com
+     #ksh ./dkim_key_gen.sh  heaerieglobalsolutions.com
+     #
+   - name: check hostname configure on host_list 
+     command: grep -i 'heaerieglobalsolutions.com' /root/mailconfig/haraka-outbound/config/host_list
+     ignore_errors: true
+     register: grep_output
+   - debug:
+      var: grep_output.stdout_lines
+
+      #   - name: haraka configure hostname in host_list
+      #become: True
+      #command: echo  "heaerieglobalsolutions.com" >  /root/mailconfig/haraka-outbound/config/host_list
+      #when: grep_output.stdout_lines == []
+   - name: haraka configure hostname in host_list
+     lineinfile:
+          path: /root/mailconfig/haraka-outbound/config/host_list
+          line: 'heaerieglobalsolutions.com'
+          insertbefore: BOF
+     when: grep_output.stdout_lines == []

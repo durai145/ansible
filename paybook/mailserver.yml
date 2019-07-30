@@ -39,6 +39,7 @@
    - name: git checkout "Haraka"  
      become: True
      command: git clone https://github.com/heaerie/Haraka.git  /root/mailserver/
+
    - name:  install haraka 
      become: True
      command: npm install -g /root/mailserver/
