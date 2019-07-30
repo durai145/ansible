@@ -6,7 +6,7 @@
    tasks:
     - name: Get running processes list from remote host
       ignore_errors: yes
-      shell: "ps -few | grep haraka | awk '{print $2}'"
+      shell: "ps -few | grep haraka | grep -v grep | awk '{print $2}'"
       register: running_processes
  
     - name: Kill running processes
