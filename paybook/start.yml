@@ -1,0 +1,16 @@
+---
+ - name: install pre-install for mail server
+   hosts: web
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+   tasks:
+      - name: 
+        shell: "(cd /root/mailconfig/haraka-outbound; nohup haraka -c /root/mailconfig/haraka-outbound >/dev/null 2>&1 &)"
+        async: 10
+        poll: 0
