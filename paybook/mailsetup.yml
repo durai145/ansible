@@ -52,3 +52,16 @@
           line: 'heaerieglobalsolutions.com'
           insertbefore: BOF
      when: grep_output.stdout_lines == []
+
+   - name: check hostname configure on host_list 
+     command: grep -i 'heaerieglobalsolutions.com' /etc/hostname
+     ignore_errors: true
+     register: grep_output1
+   - debug:
+      var: grep_output1.stdout_lines
+   - name: haraka in hostname
+     lineinfile:
+          path: /etc/hostname
+          line: 'heaerieglobalsolutions.com'
+          insertbefore: BOF
+     when: grep_output1.stdout_lines == []
