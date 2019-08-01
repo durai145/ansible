@@ -1,0 +1,25 @@
+---
+ - name: install pre-install for mail server
+   hosts: web
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+    - name: Get running processes list from remote host
+      ignore_errors: yes
+      shell: "ps -few | grep mongod | grep -v grep | awk '{print $2}'"
+      register: running_processes
+
+    - debug:
+        var: running_processes
+
+
+    - name: 
+      shell: "(cd /root/; nohup nohup sudo mongod --bind_ip heaerieglobalsolutions.com &)"
+      async: 10
+      poll: 0
+      when:  running_processes.stdout_lines == []

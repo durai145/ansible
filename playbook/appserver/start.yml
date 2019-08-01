@@ -11,7 +11,7 @@
    tasks:
     - name: Get running processes list from remote host
       ignore_errors: yes
-      shell: "ps -few | grep haraka | grep -v grep | awk '{print $2}'"
+      shell: "ps -few | grep node |grep app | grep -v grep | awk '{print $2}'"
       register: running_processes
 
     - debug:
@@ -19,7 +19,7 @@
 
 
     - name: 
-      shell: "(cd /root/mailconfig/haraka-outbound; nohup haraka -c /root/mailconfig/haraka-outbound  2>&1 &)"
+      shell: "(cd /root/appserver; nohup node app.js  &)"
       async: 10
       poll: 0
       when:  running_processes.stdout_lines == []
