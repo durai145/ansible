@@ -19,7 +19,7 @@
 
 
     - name: 
-      shell: "(cd /root/appserver; nohup node app.js  2>&1 &)"
+      shell: "(cd /root/appserver; nohup node app.js &)"
       async: 10
       poll: 0
       when:  running_processes.stdout_lines == []
