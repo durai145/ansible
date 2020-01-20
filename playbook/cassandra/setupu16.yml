@@ -1,0 +1,48 @@
+---
+ - name: install pre-install for mail server
+   hosts: cassandrau16
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+   - name: Add the user 'cassandra' with a specific uid and a primary group of 'cassandra'
+     user:
+                name: cassandra
+                comment: John Doe
+                uid: 1040
+                group: admin
+   - name: Creates directory
+     file:
+                path: /home/cassandra
+                state: directory
+                owner: cassandra 
+                #group: cassandra 
+                mode: 0775
+                recurse: yes
+   - name: clone code for cassandra 
+     git:
+            repo: https://github.com/durai145/cassandra.git
+            dest: /home/cassandra/cassandra
+            update: no
+     become_user: cassandra
+   - name: install java
+     apt:
+             name: default-jdk
+             update_cache: yes
+
+   - name: install python 
+     apt:
+             name: python
+             update_cache: yes
+   - name: install ant
+     apt:
+             name: ant
+             update_cache: yes
+   - name: build cassandra
+     shell: 
+        cmd: ant 
+        chdir: /home/cassandra/cassandra
