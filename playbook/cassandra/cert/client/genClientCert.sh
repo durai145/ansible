@@ -1,0 +1,1 @@
+keytool -genkeypair -keyalg RSA -alias HEACDBU16001 -keystore HEACDBU16001.jks -storepass Apple123 -keypass Apple123 -validity 365 -keysize 2048 -dname "CN=HEACDBU16001, OU=TestCluster, O=HeaerieGlobalSolutions, C=IN" 
