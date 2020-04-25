@@ -1,6 +1,6 @@
 ---
  - name: install pre-install for mail server
-   hosts: web
+   hosts: mailserver
    remote_user: root
    become_method: sudo
    become_user: root
