@@ -1,0 +1,43 @@
+---
+ - name: install pre-install for mail server
+   hosts: local
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+   - name: Update repositories cache and install "make" package
+     apt:
+       name: make
+       update_cache: yes
+
+   - name: Update repositories cache and install "nodejs" package
+     apt:
+       name: nodejs
+       update_cache: yes
+
+   - name: Update repositories cache and install "npm" package
+     apt:
+       name: npm
+       update_cache: yes
+
+   - name: git checkout "Lxcweb" Ampule
+     become: True
+     git: 
+        repo: https://github.com/heaerie/lxcweb.git
+        clone: no
+        update: no
+        dest: /root/lxcweb/
+
+   - name: run the "npm install" at "/root/lxcweb/"
+     shell:
+        cmd: npm install
+        chdir: /root/lxcweb/
+
+   - name: init the lxd 
+     shell:
+        cmd: bash init.sh 
+        chdir: /root/lxcweb/
