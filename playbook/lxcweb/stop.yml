@@ -1,5 +1,5 @@
- - name: stop the "lxcweb" Ampule
-   hosts: local
+ - name: install pre-install for mail server
+   hosts: web
    remote_user: root
    become_method: sudo
    become_user: root 

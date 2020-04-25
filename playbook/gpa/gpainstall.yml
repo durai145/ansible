@@ -1,0 +1,25 @@
+---
+ - name: install pre-install for mail server
+   hosts: gpahosts
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/nano/gpa/target/rpm/gpa/RPMS/aarch64/gpa-0.0.1-SNAPSHOT20200422000049.aarch64.rpm
+        dest: /tmp/gpa-0.0.1-SNAPSHOT20200422000049.aarch64.rpm
+        owner: root
+        group: root
+        mode: '064'
+
+    - name: Add the user 'gpaadmin' with a specific uid and a primary group of 'gpaadming'
+      user:
+        name: gpasdmin
+        comment: Global Product Admin
+        uid: 1040
+        group: gpaadming

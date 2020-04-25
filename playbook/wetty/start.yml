@@ -1,6 +1,6 @@
 ---
  - name: install pre-install for mail server
-   hosts: local
+   hosts: web
    remote_user: root
    become_method: sudo
    become_user: root
@@ -19,7 +19,7 @@
 
 
     - name: 
-      shell: "(cd /root/lxcweb; nohup node app.js  &)"
+      shell: "(cd /root/wetty; nohup start.sh  &)"
       async: 10
       poll: 0
       when:  running_processes.stdout_lines == []
