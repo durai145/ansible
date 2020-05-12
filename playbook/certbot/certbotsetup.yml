@@ -1,0 +1,28 @@
+---
+ - name: install pre-install for mail server
+   hosts: localhost
+   remote_user: root
+   become_method: sudo
+   become_user: root
+   vars:
+     http_port: 80 
+     http_clients: 200 
+       
+   tasks:
+   - name: Update repositories cache and install "make" package
+     apt:
+       name: ksh
+       update_cache: yes
+
+   - name: Install "software-properties-common"
+     apt:
+       name: software-properties-common
+       update_cache: yes
+
+   - name: install elasticsearch 6.x deb repository
+     apt_repository:
+       repo: universe
+       update_cache: yes
+       state: present
+     become: true
+
